@@ -100,7 +100,7 @@ def train(epoch):
         # data = data.view(28, args.batch_size, 28) 
 
         # data for RNN (seq_len, batch, input_size)
-        data = data.permute(2,0,3,1).contiguous().view(28,args.batch_size,28)
+        data = data.permute(3,0,2,1).contiguous().view(28,args.batch_size,28)
         print(data[:5,0,:10])
         hidden = repackage_hidden(hidden)
         output, hidden = model(data, hidden)
@@ -133,7 +133,7 @@ def test():
 
         # output = model(data)
         # data = data.view(28, args.batch_size, 28)
-        data = data.permute(2,0,3,1).contiguous().view(28,args.batch_size,28)
+        data = data.permute(3,0,2,1).contiguous().view(28,args.batch_size,28)
 
         output, hidden = model(data, hidden)
 
