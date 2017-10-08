@@ -209,11 +209,11 @@ if __name__ == '__main__':
     if args.cuda:
         model.cuda()
 
-    # train_loader.dataset.train_data = train_loader.dataset.train_data[:64, :, :]
-    # train_loader.dataset.train_labels = train_loader.dataset.train_labels[:64]
+    train_loader.dataset.train_data = train_loader.dataset.train_data[:512, :, :]
+    train_loader.dataset.train_labels = train_loader.dataset.train_labels[:512]
     
-    # test_loader.dataset.test_data = train_loader.dataset.train_data[:64, :, :]
-    # test_loader.dataset.test_labels = train_loader.dataset.train_labels[:64]
+    test_loader.dataset.test_data = train_loader.dataset.train_data[:512, :, :]
+    test_loader.dataset.test_labels = train_loader.dataset.train_labels[:512]
     # exit()
 
     print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
