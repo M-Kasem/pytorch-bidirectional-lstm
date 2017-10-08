@@ -204,7 +204,7 @@ if __name__ == '__main__':
                            transforms.ToTensor(),
                            transforms.Normalize((0.1307,), (0.3081,))
                        ])),
-        batch_size=args.batch_size, shuffle=args.shuffle, drop_last=True, **kwargs)
+        batch_size=args.batch_size, shuffle = not args.no_shuffle, drop_last=True, **kwargs)
     test_loader = torch.utils.data.DataLoader(
         datasets.MNIST('./data', train=False, transform=transforms.Compose([
                            transforms.ToTensor(),
@@ -225,7 +225,7 @@ if __name__ == '__main__':
     print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
     print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
     print("train batch size: ", args.batch_size, " test batch size: ", args.batch_size)
-    print("learning rate: ", args.lr, " shuffle train ", args.shuffle)
+    print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle)
     # optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     for epoch in range(1, args.epochs + 1):
         train(epoch)
