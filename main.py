@@ -97,7 +97,7 @@ def train(epoch):
 
         # optimizer.zero_grad()
 
-        data = data.view(28, -1, 28)
+        data = data.view(28, args.batch_size, 28)
         hidden = repackage_hidden(hidden)
         output, hidden = model(data, hidden)
         # output = model(data)
@@ -126,7 +126,7 @@ def test():
 
 
         # output = model(data)
-        data = data.view(28, -1, 28)
+        data = data.view(28, args.batch_size, 28)
         output, hidden = model(data, hidden)
 
         # print(output.size())
@@ -184,6 +184,7 @@ if __name__ == '__main__':
                     help='slurm job id for checkpoints identification')
     args = parser.parse_args()
     args.test_batch_size = args.batch_size
+    args.shuffle = False
     args.cuda = not args.no_cuda and torch.cuda.is_available()
 
     torch.manual_seed(args.seed)
@@ -198,7 +199,7 @@ if __name__ == '__main__':
                            transforms.ToTensor(),
                            transforms.Normalize((0.1307,), (0.3081,))
                        ])),
-        batch_size=args.batch_size, shuffle=False, drop_last=True, **kwargs)
+        batch_size=args.batch_size, shuffle=args.shuffle, drop_last=True, **kwargs)
     test_loader = torch.utils.data.DataLoader(
         datasets.MNIST('./data', train=False, transform=transforms.Compose([
                            transforms.ToTensor(),
@@ -209,17 +210,17 @@ if __name__ == '__main__':
     if args.cuda:
         model.cuda()
 
-    train_loader.dataset.train_data = train_loader.dataset.train_data[:512*1, :, :]
-    train_loader.dataset.train_labels = train_loader.dataset.train_labels[:512*1]
+    train_loader.dataset.train_data = train_loader.dataset.train_data[:4*1, :, :]
+    train_loader.dataset.train_labels = train_loader.dataset.train_labels[:4*1]
     
-    test_loader.dataset.test_data = train_loader.dataset.train_data[:512*1, :, :]
-    test_loader.dataset.test_labels = train_loader.dataset.train_labels[:512*1]
+    test_loader.dataset.test_data = train_loader.dataset.train_data[:4*1, :, :]
+    test_loader.dataset.test_labels = train_loader.dataset.train_labels[:4*1]
     # exit()
 
     print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
     print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
     print("train batch size: ", args.batch_size, " test batch size: ", args.batch_size)
-    print("learning rate: ", args.lr)
+    print("learning rate: ", args.lr, " shuffle train ", args.shuffle)
     # optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     for epoch in range(1, args.epochs + 1):
         train(epoch)
