@@ -178,6 +178,10 @@ if __name__ == '__main__':
                         help='how many batches to wait before logging training status')
     parser.add_argument('--clip', type=float, default=0.25,
                         help='gradient clipping')
+    parser.add_argument('--exp_index', default=0, type=int, metavar='N',
+                    help='gpu index')
+    parser.add_argument('--job_id', type=int, metavar='N',
+                    help='slurm job id for checkpoints identification')
     args = parser.parse_args()
     args.test_batch_size = args.batch_size
     args.cuda = not args.no_cuda and torch.cuda.is_available()
@@ -189,14 +193,14 @@ if __name__ == '__main__':
 
     kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
     train_loader = torch.utils.data.DataLoader(
-        datasets.MNIST('../data', train=True, download=True,
+        datasets.MNIST('./data', train=True, download=True,
                        transform=transforms.Compose([
                            transforms.ToTensor(),
                            transforms.Normalize((0.1307,), (0.3081,))
                        ])),
         batch_size=args.batch_size, shuffle=False, drop_last=True, **kwargs)
     test_loader = torch.utils.data.DataLoader(
-        datasets.MNIST('../data', train=False, transform=transforms.Compose([
+        datasets.MNIST('./data', train=False, transform=transforms.Compose([
                            transforms.ToTensor(),
                            transforms.Normalize((0.1307,), (0.3081,))
                        ])),
