@@ -95,8 +95,13 @@ def train(epoch):
 
         optimizer.zero_grad()
 
+        # data (N,C,H,W)
+        print(data[0,0,:10,:10])
         # data = data.view(28, args.batch_size, 28) 
+
+        # data for RNN (seq_len, batch, input_size)
         data = data.permute(2,0,3,1).contiguous().view(28,args.batch_size,28)
+        print(data[0,0,:10,:10])
         hidden = repackage_hidden(hidden)
         output, hidden = model(data, hidden)
         # output = model(data)
@@ -182,7 +187,9 @@ if __name__ == '__main__':
     parser.add_argument('--clip', type=float, default=0.25,
                         help='gradient clipping')
     parser.add_argument('--no-shuffle', action='store_true', default=False,
-                        help='disables CUDA training')
+                        help='Shuffle data during training')
+    parser.add_argument('--n-hidden', type=int, default=128, metavar='N',
+                        help='number of layer size')
 
     parser.add_argument('--exp_index', default=0, type=int, metavar='N',
                     help='gpu index')
@@ -225,7 +232,7 @@ if __name__ == '__main__':
     print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
     print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
     print("train batch size: ", args.batch_size, " test batch size: ", args.batch_size)
-    print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs)
+    print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs, " momentum: ", args.momentum)
     
     optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     for epoch in range(1, args.epochs + 1):
