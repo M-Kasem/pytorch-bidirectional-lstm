@@ -12,7 +12,7 @@
 #output=batch_size_1_fcn_segnet.out
 
 
-BATCH_SIZE=1
+BATCH_SIZE=4
 export CUDA_VISIBLE_DEVICES=0
 python main.py --batch-size ${BATCH_SIZE} --log-interval 1 --lr 0.001 --epochs 500 --exp_index 0 --job_id ${SLURM_JOB_ID} > "${SLURM_JOB_ID}_0.out" 2>&1 &
 
