@@ -111,7 +111,7 @@ def train(epoch):
         # optimizer.step()
         if batch_idx % args.log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                epoch, batch_idx * len(data), len(train_loader.dataset),
+                epoch, batch_idx * args.batch_size, len(train_loader.dataset),
                 100. * batch_idx / len(train_loader), loss.data[0]))
 
 def test():
@@ -198,7 +198,7 @@ if __name__ == '__main__':
                            transforms.ToTensor(),
                            transforms.Normalize((0.1307,), (0.3081,))
                        ])),
-        batch_size=args.batch_size, shuffle=False, drop_last=True, **kwargs)
+        batch_size=args.batch_size, shuffle=True, drop_last=True, **kwargs)
     test_loader = torch.utils.data.DataLoader(
         datasets.MNIST('./data', train=False, transform=transforms.Compose([
                            transforms.ToTensor(),
@@ -209,11 +209,11 @@ if __name__ == '__main__':
     if args.cuda:
         model.cuda()
 
-    train_loader.dataset.train_data = train_loader.dataset.train_data[:512, :, :]
-    train_loader.dataset.train_labels = train_loader.dataset.train_labels[:512]
+    train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*4, :, :]
+    train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*4]
     
-    test_loader.dataset.test_data = train_loader.dataset.train_data[:512, :, :]
-    test_loader.dataset.test_labels = train_loader.dataset.train_labels[:512]
+    test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*4, :, :]
+    test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*4]
     # exit()
 
     print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
