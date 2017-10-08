@@ -181,13 +181,15 @@ if __name__ == '__main__':
                         help='how many batches to wait before logging training status')
     parser.add_argument('--clip', type=float, default=0.25,
                         help='gradient clipping')
+    parser.add_argument('--no-shuffle', action='store_true', default=False,
+                        help='disables CUDA training')
+
     parser.add_argument('--exp_index', default=0, type=int, metavar='N',
                     help='gpu index')
     parser.add_argument('--job_id', type=int, metavar='N',
                     help='slurm job id for checkpoints identification')
     args = parser.parse_args()
     args.test_batch_size = args.batch_size
-    args.shuffle = False
     args.cuda = not args.no_cuda and torch.cuda.is_available()
 
     torch.manual_seed(args.seed)
