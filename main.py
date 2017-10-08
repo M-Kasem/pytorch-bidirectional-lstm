@@ -185,7 +185,7 @@ if __name__ == '__main__':
                     help='slurm job id for checkpoints identification')
     args = parser.parse_args()
     args.test_batch_size = args.batch_size
-    args.shuffle = True
+    args.shuffle = False
     args.cuda = not args.no_cuda and torch.cuda.is_available()
 
     torch.manual_seed(args.seed)
