@@ -100,7 +100,7 @@ def train(epoch):
         # data = data.view(28, args.batch_size, 28) 
 
         # data for RNN (seq_len, batch, input_size)
-        data = data.permute(3,0,2,1).contiguous().view(28,args.batch_size,28)
+        data = data.permute(2,0,3,1).contiguous().view(28,args.batch_size,28)
         # print(data[:5,0,:10])
         hidden = repackage_hidden(hidden)
         output, hidden = model(data, hidden)
@@ -133,7 +133,7 @@ def test():
 
         # output = model(data)
         # data = data.view(28, args.batch_size, 28)
-        data = data.permute(3,0,2,1).contiguous().view(28,args.batch_size,28)
+        data = data.permute(2,0,3,1).contiguous().view(28,args.batch_size,28)
 
         output, hidden = model(data, hidden)
 
@@ -232,9 +232,14 @@ if __name__ == '__main__':
     print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
     print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
     print("train batch size: ", args.batch_size, " test batch size: ", args.batch_size)
-    print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs, " momentum: ", args.momentum)
     
-    optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
+    # optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
+    if args.exp_index == 0:
+        optimizer = optim.Adam(model.parameters(), lr = args.lr, betas=(0.7, 0.999))
+        print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs, " momentum: 0.7")
+    elif args.exp_index == 1:
+        optimizer = optim.Adam(model.parameters(), lr = args.lr, betas=(0.8, 0.999))
+        print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs, " momentum: 0.8")
     for epoch in range(1, args.epochs + 1):
         train(epoch)
         test()
