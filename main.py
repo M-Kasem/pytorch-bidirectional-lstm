@@ -114,7 +114,7 @@ def train(epoch):
                 epoch, batch_idx * args.batch_size, len(train_loader.dataset),
                 100. * batch_idx / len(train_loader), loss.data[0]))
             print('Target: ', target)
-            print('Train data: ', data[10, :, 10:14])
+            print('Train data: ', data[10, :, 10])
 
 def test():
     model.eval()
