@@ -140,7 +140,7 @@ def test():
 
 
         test_loss += F.nll_loss(output, target, size_average=False).data[0] # sum up batch loss
-        print('nll loss: ', F.nll_loss(output, target, size_average=False), ' .data[0]: ', F.nll_loss(output, target, size_average=False).data[0])
+        print('nll loss: ', F.nll_loss(output, target, size_average=False).data, ' .data[0]: ', F.nll_loss(output, target, size_average=False).data[0])
         pred = output.data.max(1, keepdim=True)[1] # get the index of the max log-probability
         correct += pred.eq(target.data.view_as(pred)).cpu().sum()
         # while True:
