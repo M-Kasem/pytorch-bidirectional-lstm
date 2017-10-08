@@ -88,7 +88,7 @@ def train(epoch):
         if args.cuda:
             data, target = data.cuda(), target.cuda()
         data, target = Variable(data), Variable(target)
-        print(data.size())
+        # print(data.size())
         # print(target.size())
         # print(target)
         # exit()
