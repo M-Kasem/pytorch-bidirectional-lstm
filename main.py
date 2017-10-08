@@ -96,7 +96,7 @@ def train(epoch):
         # optimizer.zero_grad()
 
         # data = data.view(28, args.batch_size, 28) 
-        data = data.permute(2,0,3,1).view(28,-1,28)
+        data = data.permute(2,0,3,1).contiguous().view(28,args.batch_size,28)
         hidden = repackage_hidden(hidden)
         output, hidden = model(data, hidden)
         # output = model(data)
@@ -128,7 +128,7 @@ def test():
 
         # output = model(data)
         # data = data.view(28, args.batch_size, 28)
-        data = data.permute(2,0,3,1).view(28,-1,28)
+        data = data.permute(2,0,3,1).contiguous().view(28,args.batch_size,28)
 
         output, hidden = model(data, hidden)
 
