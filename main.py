@@ -222,23 +222,33 @@ if __name__ == '__main__':
     if args.cuda:
         model.cuda()
 
-    train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
-    train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
-    
-    test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
-    test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
-    # exit()
-
-    print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
-    print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
-    print("train batch size: ", args.batch_size, " test batch size: ", args.batch_size)
     
     # optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     if args.exp_index == 0:
-        optimizer = optim.Adam(model.parameters(), lr = args.lr, betas=(0.7, 0.999))
+        train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
+        train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
+        
+        test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
+        test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
+        # exit()
+
+        print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
+        print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
+        print("train batch size: ", args.batch_size, " test batch size: ", args.batch_size)
+        optimizer = optim.Adam(model.parameters(), lr = args.lr, betas=(0.9, 0.999))
         print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs, " momentum: 0.7")
     elif args.exp_index == 1:
-        optimizer = optim.Adam(model.parameters(), lr = args.lr, betas=(0.8, 0.999))
+        # train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
+        # train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
+        
+        # test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
+        # test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
+        # exit()
+
+        print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
+        print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
+        print("train batch size: ", args.batch_size, " test batch size: ", args.batch_size)
+        optimizer = optim.Adam(model.parameters(), lr = args.lr, betas=(0.9, 0.999))
         print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs, " momentum: 0.8")
     for epoch in range(1, args.epochs + 1):
         train(epoch)
