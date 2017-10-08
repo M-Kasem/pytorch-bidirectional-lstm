@@ -225,7 +225,7 @@ if __name__ == '__main__':
     print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
     print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
     print("train batch size: ", args.batch_size, " test batch size: ", args.batch_size)
-    print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle)
+    print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs)
     # optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     for epoch in range(1, args.epochs + 1):
         train(epoch)
