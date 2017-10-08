@@ -215,6 +215,10 @@ if __name__ == '__main__':
     # test_loader.dataset.test_data = train_loader.dataset.train_data[:64, :, :]
     # test_loader.dataset.test_labels = train_loader.dataset.train_labels[:64]
     # exit()
+
+    print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
+    print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
+    print("train batch size: ", args.batch_size, " test batch size: ", args.batch_size)
     optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     for epoch in range(1, args.epochs + 1):
         train(epoch)
