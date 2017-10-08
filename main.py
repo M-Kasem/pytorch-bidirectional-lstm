@@ -93,7 +93,7 @@ def train(epoch):
         # print(target)
         # exit()
 
-        # optimizer.zero_grad()
+        optimizer.zero_grad()
 
         # data = data.view(28, args.batch_size, 28) 
         data = data.permute(2,0,3,1).contiguous().view(28,args.batch_size,28)
@@ -105,9 +105,9 @@ def train(epoch):
         loss.backward()
 
         torch.nn.utils.clip_grad_norm(model.parameters(), args.clip)
-        for par in model.parameters():
-            par.data.add_(-args.lr, par.grad.data)
-        # optimizer.step()
+        # for par in model.parameters():
+            # par.data.add_(-args.lr, par.grad.data)
+        optimizer.step()
         if batch_idx % args.log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * args.batch_size, len(train_loader.dataset),
@@ -197,7 +197,7 @@ if __name__ == '__main__':
         torch.cuda.manual_seed(args.seed)
 
 
-    kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
+    kwargs = {'num_workers': 2, 'pin_memory': True} if args.cuda else {}
     train_loader = torch.utils.data.DataLoader(
         datasets.MNIST('./data', train=True, download=True,
                        transform=transforms.Compose([
@@ -226,7 +226,8 @@ if __name__ == '__main__':
     print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
     print("train batch size: ", args.batch_size, " test batch size: ", args.batch_size)
     print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs)
-    # optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
+    
+    optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     for epoch in range(1, args.epochs + 1):
         train(epoch)
         test()
