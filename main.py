@@ -227,12 +227,12 @@ if __name__ == '__main__':
     
     # optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     if args.exp_index == 0:
-        train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
-        train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
+        # train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
+        # train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
         
-        test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
-        test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
-        # exit()
+        # test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
+        # test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
+        # # exit()
 
         print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
         print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
@@ -240,12 +240,12 @@ if __name__ == '__main__':
         optimizer = optim.Adam(model.parameters(), lr = args.lr, betas=(args.momentum, 0.999))
         print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs, " momentum: ", args.momentum)
     elif args.exp_index == 1:
-        train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
-        train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
+        # train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
+        # train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
         
-        test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
-        test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
-        # exit()
+        # test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
+        # test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
+        # # exit()
 
         print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
         print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
