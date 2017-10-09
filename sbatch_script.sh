@@ -14,7 +14,7 @@
 
 BATCH_SIZE=128
 export CUDA_VISIBLE_DEVICES=0
-python main.py --batch-size ${BATCH_SIZE} --log-interval 1 --lr 0.0001 --momentum 0.7 --epochs 2000 --seed 123 --exp_index 0 --job_id ${SLURM_JOB_ID} > "${SLURM_JOB_ID}_0.out" 2>&1 &
+python main.py --batch-size ${BATCH_SIZE} --log-interval 1 --lr 0.0001 --momentum 0.8 --epochs 2000 --seed 123 --exp_index 0 --job_id ${SLURM_JOB_ID} > "${SLURM_JOB_ID}_0.out" 2>&1 &
 
 export CUDA_VISIBLE_DEVICES=1
 python main.py --batch-size ${BATCH_SIZE} --log-interval 1 --lr 0.001 --momentum 0.8 --epochs 2000 --seed 123 --exp_index 1 --job_id ${SLURM_JOB_ID} > "${SLURM_JOB_ID}_1.out" 2>&1 &

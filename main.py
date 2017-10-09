@@ -65,12 +65,14 @@ class Net(nn.Module):
         self.lstm.named_parameters()
         for name, val in self.lstm.named_parameters():
             if name.find('bias') == -1:
-                getattr(self.lstm, name).data.uniform_(-initrange, initrange)
+                # getattr(self.lstm, name).data.uniform_(-initrange, initrange)
+                getattr(self.lstm, name).data.normal_(0, math.sqrt(2. / (self.input_size + self.nhid)))
             else:
                 getattr(self.lstm, name).data.fill_(0)
             
         self.decoder.bias.data.fill_(0)
-        self.decoder.weight.data.uniform_(-initrange, initrange)
+        # self.decoder.weight.data.uniform_(-initrange, initrange)
+        self.decoder.weight.data.normal_(0, math.sqrt(2. / (self.nhid + self.n_classes)))
 
 
 def repackage_hidden(h):
@@ -235,21 +237,21 @@ if __name__ == '__main__':
         print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
         print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
         print("train batch size: ", args.batch_size, " test batch size: ", args.batch_size)
-        optimizer = optim.Adam(model.parameters(), lr = args.lr, betas=(0.9, 0.999))
-        print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs, " momentum: 0.7")
+        optimizer = optim.Adam(model.parameters(), lr = args.lr, betas=(args.momentum, 0.999))
+        print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs, " momentum: ", args.momentum)
     elif args.exp_index == 1:
-        # train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
-        # train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
+        train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
+        train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
         
-        # test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
-        # test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
+        test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
+        test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
         # exit()
 
         print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
         print("Len test loader: ", len(test_loader), " Len test loader.data: ", len(test_loader.dataset))
         print("train batch size: ", args.batch_size, " test batch size: ", args.batch_size)
-        optimizer = optim.Adam(model.parameters(), lr = args.lr, betas=(0.9, 0.999))
-        print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs, " momentum: 0.8")
+        optimizer = optim.Adam(model.parameters(), lr = args.lr, betas=(args.momentum, 0.999))
+        print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs, " momentum: ", args.momentum)
     for epoch in range(1, args.epochs + 1):
         train(epoch)
         test()
