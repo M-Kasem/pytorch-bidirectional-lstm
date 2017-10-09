@@ -28,8 +28,8 @@ class Net(nn.Module):
 
         # self.encoder = nn.Embedding(self.input_size, self.input_size)
 
-        self.lstm = nn.LSTM(self.input_size, self.nhid, self.nlayers)
-        self.decoder = nn.Linear(self.nhid, self.n_classes)
+        self.lstm = nn.LSTM(self.input_size, self.nhid, self.nlayers, bidirectional=True) #bidirectional
+        self.decoder = nn.Linear(self.nhid * 2, self.n_classes)
 
         self.init_weights()
 
@@ -72,7 +72,7 @@ class Net(nn.Module):
             
         self.decoder.bias.data.fill_(0)
         # self.decoder.weight.data.uniform_(-initrange, initrange)
-        self.decoder.weight.data.normal_(0, math.sqrt(2. / (self.nhid + self.n_classes)))
+        self.decoder.weight.data.normal_(0, math.sqrt(2. / (self.nhid*2 + self.n_classes)))
 
 
 def repackage_hidden(h):
@@ -105,7 +105,7 @@ def train(epoch):
         data = data.permute(2,0,3,1).contiguous().view(28,args.batch_size,28)
         # print(data[:5,0,:10])
         hidden = repackage_hidden(hidden)
-        output, hidden = model(data, hidden)
+        output, hidden_thatisnotused = model(data, hidden)
         # output = model(data)
 
         loss = F.nll_loss(output, target)
@@ -227,11 +227,11 @@ if __name__ == '__main__':
     
     # optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     if args.exp_index == 0:
-        # train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
-        # train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
+        train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
+        train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
         
-        # test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
-        # test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
+        test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
+        test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
         # # exit()
 
         print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
@@ -240,11 +240,11 @@ if __name__ == '__main__':
         optimizer = optim.Adam(model.parameters(), lr = args.lr, betas=(args.momentum, 0.999))
         print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs, " momentum: ", args.momentum)
     elif args.exp_index == 1:
-        # train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
-        # train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
+        train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
+        train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
         
-        # test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
-        # test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
+        test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
+        test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
         # # exit()
 
         print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
