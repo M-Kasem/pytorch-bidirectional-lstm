@@ -29,7 +29,7 @@ class Net(nn.Module):
         # self.encoder = nn.Embedding(self.input_size, self.input_size)
 
         self.lstm = nn.LSTM(self.input_size, self.nhid, self.nlayers, bidirectional=True) #bidirectional
-        self.decoder = nn.Linear(self.nhid * 2, self.n_classes)
+        self.decoder = nn.Linear(self.nhid * 2, self.n_classes) #bidirectional
 
         self.init_weights()
 
@@ -56,8 +56,8 @@ class Net(nn.Module):
 
     def init_hidden(self, bsz):
         weight = next(self.parameters()).data
-        return (Variable(weight.new(self.nlayers*2, bsz, self.nhid).zero_()),
-                Variable(weight.new(self.nlayers*2, bsz, self.nhid).zero_()))
+        return (Variable(weight.new(self.nlayers*2, bsz, self.nhid).zero_()), #bidirectional
+                Variable(weight.new(self.nlayers*2, bsz, self.nhid).zero_())) #bidirectional
 
     def init_weights(self):
         initrange = 0.5
@@ -72,7 +72,7 @@ class Net(nn.Module):
             
         self.decoder.bias.data.fill_(0)
         # self.decoder.weight.data.uniform_(-initrange, initrange)
-        self.decoder.weight.data.normal_(0, math.sqrt(2. / (self.nhid*2 + self.n_classes)))
+        self.decoder.weight.data.normal_(0, math.sqrt(2. / (self.nhid*2 + self.n_classes))) #bidirectional
 
 
 def repackage_hidden(h):
@@ -227,11 +227,11 @@ if __name__ == '__main__':
     
     # optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     if args.exp_index == 0:
-        train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
-        train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
+        # train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
+        # train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
         
-        test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
-        test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
+        # test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
+        # test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
         # # exit()
 
         print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
@@ -240,11 +240,11 @@ if __name__ == '__main__':
         optimizer = optim.Adam(model.parameters(), lr = args.lr, betas=(args.momentum, 0.999))
         print("learning rate: ", args.lr, " shuffle train ", not args.no_shuffle, " epochs: ", args.epochs, " momentum: ", args.momentum)
     elif args.exp_index == 1:
-        train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
-        train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
+        # train_loader.dataset.train_data = train_loader.dataset.train_data[:1024*1, :, :]
+        # train_loader.dataset.train_labels = train_loader.dataset.train_labels[:1024*1]
         
-        test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
-        test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
+        # test_loader.dataset.test_data = train_loader.dataset.train_data[:1024*1, :, :]
+        # test_loader.dataset.test_labels = train_loader.dataset.train_labels[:1024*1]
         # # exit()
 
         print("Len train loader: ", len(train_loader), " Len train loader.data: ", len(train_loader.dataset))
