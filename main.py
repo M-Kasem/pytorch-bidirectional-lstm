@@ -56,8 +56,8 @@ class Net(nn.Module):
 
     def init_hidden(self, bsz):
         weight = next(self.parameters()).data
-        return (Variable(weight.new(self.nlayers, bsz, self.nhid).zero_()),
-                Variable(weight.new(self.nlayers, bsz, self.nhid).zero_()))
+        return (Variable(weight.new(self.nlayers*2, bsz, self.nhid).zero_()),
+                Variable(weight.new(self.nlayers*2, bsz, self.nhid).zero_()))
 
     def init_weights(self):
         initrange = 0.5
